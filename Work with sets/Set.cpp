@@ -107,7 +107,7 @@ int Set::delSet(std::string name)
 	return SUCCESS;
 }
 
-Set::Sets* Set::getSet(std::string name)
+Sets* Set::getSet(std::string name)
 {
 	Sets* tmp = m_headSet;
 
@@ -356,9 +356,13 @@ bool Set::inclusionCheck(Sets* set1, Sets* set2)
 	}
 }
 
-void Set::printSet(std::string name)
+int Set::printSet(std::string name)
 {
 	Sets* tmp = getSet(name);
+	if (tmp == nullptr)
+	{
+		return NOT_FOUND;
+	}
 	Node* tmp1 = tmp->m_set.m_head;
 	while (tmp1 != nullptr)
 	{

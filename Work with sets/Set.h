@@ -3,16 +3,18 @@
 
 #include "List.h"
 
+struct Sets
+{
+	std::string m_name;
+	List m_set;
+	Sets* m_nextSet;
+	Sets* m_prevSet;
+};
+
 class Set
 {
 private:
-	struct Sets
-	{
-		std::string m_name;
-		List m_set;
-		Sets* m_nextSet;
-		Sets* m_prevSet;
-	};
+	
 	Sets* m_headSet;
 public:
 	Set();
@@ -28,7 +30,7 @@ public:
 	int symDiffSets(Sets* resSet, Sets* set1, Sets* set2);
 	bool inclusionCheck(Sets* set1, Sets* set2);
 	Sets* getSet(std::string name);
-	void printSet(std::string name);
+	int printSet(std::string name);
 	void printNameSets();
 };
 
