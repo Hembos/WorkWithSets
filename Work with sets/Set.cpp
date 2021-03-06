@@ -376,7 +376,7 @@ void Set::printNameSets()
 	Sets* tmp = m_headSet;
 	while (tmp != nullptr)
 	{
-		std::cout << tmp->m_name << std::endl;
+		std::cout << "\"" << tmp->m_name << "\"" << std::endl;
 		tmp = tmp->m_nextSet;
 	}
 }

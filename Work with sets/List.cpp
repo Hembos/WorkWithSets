@@ -6,7 +6,7 @@ int compareStr(std::string str1, std::string str2)
 	int length,
 		itLarge = 0;
 		
-	if (str1.size() > str2.size())
+	if (str1.size() < str2.size())
 	{
 		length = str2.size();
 		itLarge = 1;
@@ -23,14 +23,14 @@ int compareStr(std::string str1, std::string str2)
 			
 	for (int i = 0; i < length; i++)
 	{
-		if (str1[i] > str2[i])
+		if (str1[i] < str2[i])
 		{
 			itLarge = 1;
 			break;
 		}
 		else
 		{
-			if (str1[i] < str2[i])
+			if (str1[i] > str2[i])
 			{
 				itLarge = 2;
 				break;

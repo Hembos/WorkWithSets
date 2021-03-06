@@ -65,6 +65,11 @@ int getCommand(Command & command, string str)
 		{
 			return INVALID_CHARACTERS;
 		}
+		if (str[index] == '"')
+		{
+			index++;
+			break;
+		}
 		index++;
 	}
 	while (str[index] != '\0')
@@ -81,7 +86,7 @@ int getCommand(Command & command, string str)
 			{
 				break;
 			}
-			if (indexStr > 80)
+			if (indexStr >= 80)
 			{
 				return LONG_STRING;
 			}
@@ -112,7 +117,10 @@ int main()
 	int error;
 	while (true)
 	{
-		getline(cin, str);		
+		if (!getline(cin, str))
+		{
+			break;
+		}	
 		error = getCommand(comm, str);
 		if (error == LONG_STRING)
 		{
