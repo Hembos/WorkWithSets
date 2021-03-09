@@ -99,8 +99,17 @@ int getCommand(Command & command, string str)
 		{
 			return WRONG_SET_NAME_OR_ELEM;
 		}
+		else
+		{
+			index++;
+		}
 		while (isspace(str[index]) || str[index] == '"')
 		{
+			if (str[index] == '"')
+			{
+				index++;
+				break;
+			}
 			index++;
 		}
 	}

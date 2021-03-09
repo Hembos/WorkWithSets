@@ -132,6 +132,27 @@ int Set::addInSet(std::string name, std::string elem)
 	return tmp->m_set.addInList(elem);
 }
 
+void addInEnd(std::string elem, Node** endSet)
+{
+	Node* newNode;
+
+	newNode = new Node;
+	newNode->m_next = nullptr;
+	newNode->m_prev = nullptr;
+
+	newNode->m_elem = elem;
+	if ((*endSet) == nullptr)
+	{
+		(*endSet) = newNode;
+	}
+	else
+	{
+		(*endSet)->m_next = newNode;
+		newNode->m_prev = (*endSet);
+		(*endSet) = (*endSet)->m_next;
+	}
+}
+
 int Set::delFromSet(std::string name, std::string elem)
 {
 	Sets* tmp = getSet(name);
@@ -166,37 +187,44 @@ int Set::unionSets(Sets* resSet, Sets* set1, Sets* set2)
 {
 	Node* tmpSet1 = set1->m_set.m_head,
 		* tmpSet2 = set2->m_set.m_head;
+	Node** endResSet = &(resSet->m_set.m_head);
+
 	int cmpElem = 0;
 	while (tmpSet1 != nullptr || tmpSet2 != nullptr)
 	{
 		if (tmpSet1 == nullptr)
 		{
-			resSet->m_set.addInList(tmpSet2->m_elem);
+			addInEnd(tmpSet2->m_elem, endResSet);
+			endResSet = &((*endResSet)->m_next);
 			tmpSet2 = tmpSet2->m_next;
 			continue;
 		}
 		if (tmpSet2 == nullptr)
 		{
-			resSet->m_set.addInList(tmpSet1->m_elem);
+			addInEnd(tmpSet1->m_elem, endResSet);
+			endResSet = &((*endResSet)->m_next);
 			tmpSet1 = tmpSet1->m_next;
 			continue;
 		}
 		cmpElem = compareStr(tmpSet1->m_elem, tmpSet2->m_elem);
 		if (cmpElem == 2)
 		{
-			resSet->m_set.addInList(tmpSet1->m_elem);
+			addInEnd(tmpSet1->m_elem, endResSet);
+			endResSet = &((*endResSet)->m_next);
 			tmpSet1 = tmpSet1->m_next;
 		}
 		else
 		{
 			if (cmpElem == 1)
 			{
-				resSet->m_set.addInList(tmpSet2->m_elem);
+				addInEnd(tmpSet2->m_elem, endResSet);
+				endResSet = &((*endResSet)->m_next);
 				tmpSet2 = tmpSet2->m_next;
 			}
 			else
 			{
-				resSet->m_set.addInList(tmpSet1->m_elem);
+				addInEnd(tmpSet1->m_elem, endResSet);
+				endResSet = &((*endResSet)->m_next);
 				tmpSet1 = tmpSet1->m_next;
 				tmpSet2 = tmpSet2->m_next;
 			}
@@ -210,6 +238,7 @@ int Set::intersectionSets(Sets* resSet, Sets* set1, Sets* set2)
 {
 	Node* tmpSet1 = set1->m_set.m_head,
 		* tmpSet2 = set2->m_set.m_head;
+	Node** endResSet = &(resSet->m_set.m_head);
 	int cmpElem = 0;
 	while (tmpSet1 != nullptr && tmpSet2 != nullptr)
 	{
@@ -226,7 +255,8 @@ int Set::intersectionSets(Sets* resSet, Sets* set1, Sets* set2)
 			}
 			else
 			{
-				resSet->m_set.addInList(tmpSet1->m_elem);
+				addInEnd(tmpSet2->m_elem, endResSet);
+				endResSet = &((*endResSet)->m_next);
 				tmpSet1 = tmpSet1->m_next;
 				tmpSet2 = tmpSet2->m_next;
 			}
@@ -240,6 +270,7 @@ int Set::diffSets(Sets* resSet, Sets* set1, Sets* set2)
 {
 	Node* tmpSet1 = set1->m_set.m_head,
 		* tmpSet2 = set2->m_set.m_head;
+	Node** endResSet = &(resSet->m_set.m_head);
 	int cmpElem = 0;
 	while (tmpSet1 != nullptr || tmpSet2 != nullptr)
 	{
@@ -250,14 +281,16 @@ int Set::diffSets(Sets* resSet, Sets* set1, Sets* set2)
 		}
 		if (tmpSet2 == nullptr)
 		{
-			resSet->m_set.addInList(tmpSet1->m_elem);
+			addInEnd(tmpSet1->m_elem, endResSet);
+			endResSet = &((*endResSet)->m_next);
 			tmpSet1 = tmpSet1->m_next;
 			continue;
 		}
 		cmpElem = compareStr(tmpSet1->m_elem, tmpSet2->m_elem);
 		if (cmpElem == 2)
 		{
-			resSet->m_set.addInList(tmpSet1->m_elem);
+			addInEnd(tmpSet1->m_elem, endResSet);
+			endResSet = &((*endResSet)->m_next);
 			tmpSet1 = tmpSet1->m_next;
 		}
 		else
@@ -281,32 +314,37 @@ int Set::symDiffSets(Sets* resSet, Sets* set1, Sets* set2)
 {
 	Node* tmpSet1 = set1->m_set.m_head,
 		* tmpSet2 = set2->m_set.m_head;
+	Node** endResSet = &(resSet->m_set.m_head);
 	int cmpElem = 0;
 	while (tmpSet1 != nullptr || tmpSet2 != nullptr)
 	{
 		if (tmpSet1 == nullptr)
 		{
-			resSet->m_set.addInList(tmpSet2->m_elem);
+			addInEnd(tmpSet2->m_elem, endResSet);
+			endResSet = &((*endResSet)->m_next);
 			tmpSet2 = tmpSet2->m_next;
 			continue;
 		}
 		if (tmpSet2 == nullptr)
 		{
-			resSet->m_set.addInList(tmpSet1->m_elem);
+			addInEnd(tmpSet1->m_elem, endResSet);
+			endResSet = &((*endResSet)->m_next);
 			tmpSet1 = tmpSet1->m_next;
 			continue;
 		}
 		cmpElem = compareStr(tmpSet1->m_elem, tmpSet2->m_elem);
 		if (cmpElem == 2)
 		{
-			resSet->m_set.addInList(tmpSet1->m_elem);
+			addInEnd(tmpSet1->m_elem, endResSet);
+			endResSet = &((*endResSet)->m_next);
 			tmpSet1 = tmpSet1->m_next;
 		}
 		else
 		{
 			if (cmpElem == 1)
 			{
-				resSet->m_set.addInList(tmpSet2->m_elem);
+				addInEnd(tmpSet2->m_elem, endResSet);
+				endResSet = &((*endResSet)->m_next);
 				tmpSet2 = tmpSet2->m_next;
 			}
 			else
@@ -366,7 +404,7 @@ int Set::printSet(std::string name)
 	Node* tmp1 = tmp->m_set.m_head;
 	while (tmp1 != nullptr)
 	{
-		std::cout << tmp1->m_elem << std::endl;
+		std::cout << "\"" << tmp1->m_elem << "\"" << std::endl;
 		tmp1 = tmp1->m_next;
 	}
 }
